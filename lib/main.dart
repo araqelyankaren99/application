@@ -1,41 +1,38 @@
+import 'package:application/src/domain/entity/local/permission_message_model.dart';
 import 'package:application/src/domain/services/permission.dart';
 import 'package:application/src/utils/dialogs/permission.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   const permissionService = PermissionService();
   final permissionMessage = await permissionService.permissionMessage();
-  runApp(MyApp(permissionMessage: permissionMessage));
+  final permissionModel =
+      PermissionMessageModel(permissionMessage: permissionMessage);
+  runApp(
+    Provider(
+      create: (_) => permissionModel,
+      child: const MyApp(),
+    ),
+  );
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({
-    super.key,
-    required this.permissionMessage,
-  });
-
-  final String permissionMessage;
+  const MyApp({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+    return const MaterialApp(
       title: 'Flutter Demo',
       debugShowCheckedModeBanner: false,
-      home: MyHomePage(
-        permissionMessage: permissionMessage,
-      ),
+      home: MyHomePage(),
     );
   }
 }
 
 class MyHomePage extends StatefulWidget {
-  const MyHomePage({
-    super.key,
-    required this.permissionMessage,
-  });
-
-  final String permissionMessage;
+  const MyHomePage({super.key});
 
   @override
   State<MyHomePage> createState() => _MyHomePageState();
@@ -48,9 +45,10 @@ class _MyHomePageState extends State<MyHomePage> {
   void initState() {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_) {
+      final permissionModel = context.read<PermissionMessageModel>();
       showPermissionDialog(
         context,
-        permissionMessage: widget.permissionMessage,
+        permissionMessage: permissionModel.permissionMessage,
       );
     });
   }

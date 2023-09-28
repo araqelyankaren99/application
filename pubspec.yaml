@@ -18,6 +18,8 @@ dependencies:
   #text
   auto_size_text: ^3.0.0
 
+  #state menegement
+  provider: ^6.0.5
 dev_dependencies:
   flutter_test:
     sdk: flutter
