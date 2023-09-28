@@ -1,18 +1,27 @@
+import 'package:application/service_locator.dart';
+import 'package:application/src/config/navigation/main_navigation.dart';
+import 'package:application/src/config/navigation/navigation_controller.dart';
+import 'package:application/src/config/navigation/routing_observer.dart';
 import 'package:application/src/domain/entity/local/permission_message_model.dart';
 import 'package:application/src/domain/services/permission.dart';
-import 'package:application/src/utils/dialogs/permission.dart';
 import 'package:flutter/material.dart';
+import 'package:get_it/get_it.dart';
 import 'package:provider/provider.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  setupDependencies();
   const permissionService = PermissionService();
+  final navigationController = NavigationController();
   final permissionMessage = await permissionService.permissionMessage();
   final permissionModel =
       PermissionMessageModel(permissionMessage: permissionMessage);
   runApp(
-    Provider(
-      create: (_) => permissionModel,
+    MultiProvider(
+      providers: [
+        Provider<PermissionMessageModel>(create: (_) => permissionModel),
+        Provider<NavigationController>(create: (_) => navigationController),
+      ],
       child: const MyApp(),
     ),
   );
@@ -21,92 +30,20 @@ Future<void> main() async {
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
+  static final _mainNavigation = GetIt.I<MainNavigation>();
+  static final _routingObserver = GetIt.I<RoutingObserver>();
+
   @override
   Widget build(BuildContext context) {
-    return const MaterialApp(
-      title: 'Flutter Demo',
+    return MaterialApp(
       debugShowCheckedModeBanner: false,
-      home: MyHomePage(),
-    );
-  }
-}
-
-class MyHomePage extends StatefulWidget {
-  const MyHomePage({super.key});
-
-  @override
-  State<MyHomePage> createState() => _MyHomePageState();
-}
-
-class _MyHomePageState extends State<MyHomePage> {
-  int _counter = 0;
-
-  @override
-  void initState() {
-    super.initState();
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      final permissionModel = context.read<PermissionMessageModel>();
-      showPermissionDialog(
-        context,
-        permissionMessage: permissionModel.permissionMessage,
-      );
-    });
-  }
-
-  void _incrementCounter() {
-    setState(() {
-      // This call to setState tells the Flutter framework that something has
-      // changed in this State, which causes it to rerun the build method below
-      // so that the display can reflect the updated values. If we changed
-      // _counter without calling setState(), then the build method would not be
-      // called again, and so nothing would appear to happen.
-      _counter++;
-    });
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    // This method is rerun every time setState is called, for instance as done
-    // by the _incrementCounter method above.
-    //
-    // The Flutter framework has been optimized to make rerunning build methods
-    // fast, so that you can just rebuild anything that needs updating rather
-    // than having to individually change instances of widgets.
-    return Scaffold(
-      body: Center(
-        // Center is a layout widget. It takes a single child and positions it
-        // in the middle of the parent.
-        child: Column(
-          // Column is also a layout widget. It takes a list of children and
-          // arranges them vertically. By default, it sizes itself to fit its
-          // children horizontally, and tries to be as tall as its parent.
-          //
-          // Column has various properties to control how it sizes itself and
-          // how it positions its children. Here we use mainAxisAlignment to
-          // center the children vertically; the main axis here is the vertical
-          // axis because Columns are vertical (the cross axis would be
-          // horizontal).
-          //
-          // TRY THIS: Invoke "debug painting" (choose the "Toggle Debug Paint"
-          // action in the IDE, or press "p" in the console), to see the
-          // wireframe for each widget.
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            const Text(
-              'You have pushed the button this many times:',
-            ),
-            Text(
-              '$_counter',
-              style: Theme.of(context).textTheme.headlineMedium,
-            ),
-          ],
-        ),
-      ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: _incrementCounter,
-        tooltip: 'Increment',
-        child: const Icon(Icons.add),
-      ), // This trailing comma makes auto-formatting nicer for build methods.
+      routes: _mainNavigation.routes,
+      initialRoute: _mainNavigation.initialRoute,
+      onGenerateRoute: _mainNavigation.onGenerateRoute,
+      navigatorKey: context.read<NavigationController>().navigationKey,
+      navigatorObservers: [
+        _routingObserver,
+      ],
     );
   }
 }
