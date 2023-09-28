@@ -60,7 +60,7 @@ class _ButtonTextWidget extends StatelessWidget {
           style: TextStyle(
               fontWeight: FontWeight.w700,
               fontSize: 50 * rw(context),
-              color: Colors.white),
+              color: Colors.white,),
         ),
       ),
     );

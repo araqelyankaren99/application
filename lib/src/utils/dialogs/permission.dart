@@ -5,7 +5,7 @@ import 'package:application/src/utils/constants/constants.dart';
 import 'package:flutter/material.dart';
 
 void showPermissionDialog(BuildContext context,
-    {required String permissionMessage}) {
+    {required String permissionMessage,}) {
   if(permissionMessage.isEmpty){
     return;
   }
@@ -16,9 +16,7 @@ void showPermissionDialog(BuildContext context,
     context: context,
     builder: (context) {
       return Dialog(
-        shape: const RoundedRectangleBorder(
-          borderRadius: BorderRadius.zero,
-        ),
+        shape: const RoundedRectangleBorder(),
         insetPadding: EdgeInsets.zero,
         elevation: 0,
         backgroundColor: const Color(0xFFC6EBFF).withOpacity(0.8),
@@ -59,7 +57,7 @@ class _PermissionMessageBody extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             const _WarningImage(),
-            PermissionTextWidget(permissionMessage: permissionMessage)
+            PermissionTextWidget(permissionMessage: permissionMessage),
           ],
         ),
       ),
