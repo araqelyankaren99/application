@@ -10,14 +10,22 @@ class SocketBloc extends Bloc<SocketEvent, SocketState> {
     on<ConnectSocketEvent>(_onConnectSocketEventToState);
   }
 
+  StreamSubscription<dynamic>? _socketSubscription;
+
   Future<void> _onConnectSocketEventToState(
     ConnectSocketEvent event,
     Emitter<SocketState> emit,
   ) async {
     final socketService = SocketService()..startConnectSocket(socketUrl: '');
-    socketService.onSocketData.listen(_onSocketEvent);
+    _socketSubscription = socketService.onSocketData.listen(_onSocketEvent);
   }
 
   void _onSocketEvent(dynamic event){
+  }
+
+  @override
+  Future<void> close() async{
+    _socketSubscription?.cancel();
+     super.close();
   }
 }

@@ -6,24 +6,29 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class PermissionListenerWidget extends StatelessWidget {
-  const PermissionListenerWidget({Key? key,required this.child}) : super(key: key);
+  const PermissionListenerWidget({Key? key, required this.child})
+      : super(key: key);
 
   final Widget child;
 
   @override
   Widget build(BuildContext context) {
-    return BlocListener<PermissionBloc,PermissionState>(listener: _permissionListener,child: child,);
+    return BlocListener<PermissionBloc, PermissionState>(
+      listener: _permissionListener,
+      child: child,
+    );
   }
 
-  void _permissionListener(BuildContext context , PermissionState state){
-    if(state is PermissionsNotExistingState){
+  void _permissionListener(BuildContext context, PermissionState state) {
+    if (state is PermissionsNotExistingState) {
       final navigationController = context.read<NavigationController>();
       final currentContext = navigationController.navigationKey.currentContext;
-      if(currentContext == null){
+      if (currentContext == null) {
         return;
       }
       final permissionMessage = state.permissionMessage;
-      showPermissionDialog(currentContext ,permissionMessage : permissionMessage );
+      showPermissionDialog(currentContext,
+          permissionMessage: permissionMessage,);
     }
   }
 }
