@@ -2,27 +2,31 @@ import 'package:application/service_locator.dart';
 import 'package:application/src/config/navigation/main_navigation.dart';
 import 'package:application/src/config/navigation/navigation_controller.dart';
 import 'package:application/src/config/navigation/routing_observer.dart';
-import 'package:application/src/domain/entity/local/permission_message_model.dart';
-import 'package:application/src/domain/services/permission.dart';
+import 'package:application/src/domain/providers/bloc/permission/bloc.dart';
+import 'package:application/src/domain/providers/bloc/socket/bloc.dart';
+import 'package:application/src/presentation/widgets/global_listener/global_listener.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get_it/get_it.dart';
 import 'package:provider/provider.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   setupDependencies();
-  const permissionService = PermissionService();
   final navigationController = NavigationController();
-  final permissionMessage = await permissionService.permissionMessage();
-  final permissionModel =
-      PermissionMessageModel(permissionMessage: permissionMessage);
+  final permissionBloc = PermissionBloc();
+  final socketBloc = SocketBloc();
+
   runApp(
     MultiProvider(
       providers: [
-        Provider<PermissionMessageModel>(create: (_) => permissionModel),
         Provider<NavigationController>(create: (_) => navigationController),
+        BlocProvider<PermissionBloc>(create: (_) => permissionBloc),
+        BlocProvider<SocketBloc>(create: (_) => socketBloc),
       ],
-      child: const MyApp(),
+      child: const GlobalListenerWidget(
+        child: MyApp(),
+      ),
     ),
   );
 }
@@ -41,9 +45,7 @@ class MyApp extends StatelessWidget {
       initialRoute: _mainNavigation.initialRoute,
       onGenerateRoute: _mainNavigation.onGenerateRoute,
       navigatorKey: context.read<NavigationController>().navigationKey,
-      navigatorObservers: [
-        _routingObserver,
-      ],
+      navigatorObservers: [_routingObserver],
     );
   }
 }

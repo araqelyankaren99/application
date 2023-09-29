@@ -32,6 +32,10 @@ dependencies:
   #camera
   camera: ^0.10.5+4
 
+  #network
+  socket_io_client: ^1.0.2
+  http: ^1.1.0
+
 dev_dependencies:
   flutter_test:
     sdk: flutter

@@ -12,10 +12,10 @@ void setupDependencies() {
 }
 
 void _registerNavigation() {
-  _registerPageNotifier();
-  _registerRoutingObserver();
   _registerScreenFactory();
   _registerNavigationService();
+  _registerPageNotifier();
+  _registerRoutingObserver();
 }
 
 void _registerPageNotifier() {

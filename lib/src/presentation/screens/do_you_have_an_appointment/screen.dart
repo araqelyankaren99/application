@@ -18,4 +18,9 @@ class _DoYouHaveAnAppointmentScreenState
       ),
     );
   }
+
+  @override
+  void dispose() {
+    super.dispose();
+  }
 }
