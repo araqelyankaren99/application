@@ -27,8 +27,10 @@ class PermissionListenerWidget extends StatelessWidget {
         return;
       }
       final permissionMessage = state.permissionMessage;
-      showPermissionDialog(currentContext,
-          permissionMessage: permissionMessage,);
+      showPermissionDialog(
+        currentContext,
+        permissionMessage: permissionMessage,
+      );
     }
   }
 }

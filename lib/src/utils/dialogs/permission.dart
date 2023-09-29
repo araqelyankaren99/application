@@ -1,4 +1,4 @@
-import 'package:application/src/presentation/widgets/permission_text.dart';
+import 'package:application/src/presentation/widgets/dialog_text_widget.dart';
 import 'package:application/src/presentation/widgets/settings_button.dart';
 import 'package:application/src/presentation/widgets/warning_image.dart';
 import 'package:application/src/utils/constants/constants.dart';
@@ -6,9 +6,6 @@ import 'package:flutter/material.dart';
 
 void showPermissionDialog(BuildContext context,
     {required String permissionMessage,}) {
-  if(permissionMessage.isEmpty){
-    return;
-  }
 
   showDialog(
     useSafeArea: false,
@@ -57,7 +54,7 @@ class _PermissionMessageBody extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             const _WarningImage(),
-            PermissionTextWidget(permissionMessage: permissionMessage),
+            DialogTextWidget(text: permissionMessage),
           ],
         ),
       ),
