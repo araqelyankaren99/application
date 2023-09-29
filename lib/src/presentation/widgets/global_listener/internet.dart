@@ -19,7 +19,6 @@ class InternetListenerWidget extends StatelessWidget {
   }
 
   void _internetListener(BuildContext context, InternetState state) {
-    print('internet state -> $state');
     final navigationController = context.read<NavigationController>();
     final currentContext = navigationController.navigationKey.currentContext;
     if (currentContext == null) {
