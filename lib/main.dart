@@ -7,6 +7,7 @@ import 'package:application/src/domain/providers/bloc/internet/bloc.dart';
 import 'package:application/src/domain/providers/bloc/permission/bloc.dart';
 import 'package:application/src/domain/providers/bloc/socket/bloc.dart';
 import 'package:application/src/presentation/widgets/global_listener/global_listener.dart';
+import 'package:application/src/presentation/widgets/global_loader.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get_it/get_it.dart';
@@ -21,7 +22,6 @@ Future<void> main() async {
   final batteryBloc = BatteryBloc();
   final internetBloc = InternetBloc();
 
-
   runApp(
     MultiProvider(
       providers: [
@@ -32,7 +32,9 @@ Future<void> main() async {
         BlocProvider<InternetBloc>(create: (_) => internetBloc),
       ],
       child: const GlobalListenerWidget(
-        child: MyApp(),
+        child: GlobalLoaderWidget(
+          child: MyApp(),
+        ),
       ),
     ),
   );
