@@ -13,16 +13,19 @@ class LoginScreen extends StatefulWidget {
 class _LoginScreenState extends State<LoginScreen> {
   @override
   Widget build(BuildContext context) {
-    return  Scaffold(
+    return Scaffold(
       body: Center(
-        child: GestureDetector(onTap: _onTap,child: const Text('Login screen'),),
+        child: GestureDetector(
+          onTap: _onTap,
+          child: const Text('Login screen'),
+        ),
       ),
     );
   }
 
   void _onTap() {
     context.read<NavigationController>().pushAndRemoveUntil(
-      pageName: MainNavigationRouteNames.welcome,
-    );
+          pageName: MainNavigationRouteNames.welcome,
+        );
   }
 }
