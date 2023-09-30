@@ -14,7 +14,7 @@ import 'package:provider/provider.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  setupDependencies();
+  await setupDependencies();
   final navigationController = NavigationController();
   final permissionBloc = PermissionBloc();
   final socketBloc = SocketBloc();

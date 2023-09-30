@@ -3,12 +3,15 @@ import 'package:application/src/config/navigation/page_notifier.dart';
 import 'package:application/src/config/navigation/route_names.dart';
 import 'package:application/src/config/navigation/routing_observer.dart';
 import 'package:application/src/domain/screen_factory/factory.dart';
+import 'package:application/src/domain/services/app_config.dart';
+import 'package:application/src/utils/enum/app_mode.dart';
 import 'package:get_it/get_it.dart';
 
 final _serviceLocator = GetIt.instance;
 
-void setupDependencies() {
+Future<void> setupDependencies() async{
   _registerNavigation();
+  await _registerAppConfig();
 }
 
 void _registerNavigation() {
@@ -16,6 +19,10 @@ void _registerNavigation() {
   _registerNavigationService();
   _registerPageNotifier();
   _registerRoutingObserver();
+}
+
+Future<void> _registerAppConfig() async {
+  await const AppConfigService().initAppConfig(ApplicationMode.dev);
 }
 
 void _registerPageNotifier() {
