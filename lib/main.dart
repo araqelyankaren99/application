@@ -20,7 +20,7 @@ Future<void> main() async {
   final permissionBloc = PermissionBloc();
   final socketBloc = SocketBloc();
   final batteryBloc = BatteryBloc();
-  final internetBloc = InternetBloc();
+  final internetBloc = GetIt.I<InternetBloc>();
 
   runApp(
     MultiProvider(
