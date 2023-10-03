@@ -8,5 +8,9 @@ abstract class PermissionEvent extends Equatable {
 }
 
 class CheckPermissionEvent extends PermissionEvent {
-  const CheckPermissionEvent();
+  const CheckPermissionEvent({required this.permissionMessage});
+  final String permissionMessage;
+
+  @override
+  List<Object?> get props => [permissionMessage];
 }

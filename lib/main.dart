@@ -2,9 +2,11 @@ import 'package:application/service_locator.dart';
 import 'package:application/src/config/navigation/main_navigation.dart';
 import 'package:application/src/config/navigation/navigation_controller.dart';
 import 'package:application/src/config/navigation/routing_observer.dart';
+import 'package:application/src/data/data_provider/permission/message.dart';
 import 'package:application/src/domain/providers/bloc/battery/bloc.dart';
 import 'package:application/src/domain/providers/bloc/internet/bloc.dart';
 import 'package:application/src/domain/providers/bloc/permission/bloc.dart';
+import 'package:application/src/domain/providers/bloc/permission/event.dart';
 import 'package:application/src/domain/providers/bloc/socket/bloc.dart';
 import 'package:application/src/presentation/widgets/global_listener/global_listener.dart';
 import 'package:application/src/presentation/widgets/global_loader.dart';
@@ -17,16 +19,20 @@ Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await setupDependencies();
   final navigationController = NavigationController();
-  final permissionBloc = PermissionBloc();
   final socketBloc = SocketBloc();
   final batteryBloc = BatteryBloc();
+  const messageDataProvider = PermissionMessageDataProvider();
+  final permissionBloc = PermissionBloc();
   final internetBloc = GetIt.I<InternetBloc>();
 
   runApp(
     MultiProvider(
       providers: [
         Provider<NavigationController>(create: (_) => navigationController),
-        BlocProvider<PermissionBloc>(create: (_) => permissionBloc),
+        BlocProvider<PermissionBloc>(
+            create: (_) => permissionBloc
+              ..add(
+                  CheckPermissionEvent(permissionMessage: messageDataProvider.permissionMessage),)),
         BlocProvider<SocketBloc>(create: (_) => socketBloc),
         BlocProvider<BatteryBloc>(create: (_) => batteryBloc),
         BlocProvider<InternetBloc>(create: (_) => internetBloc),

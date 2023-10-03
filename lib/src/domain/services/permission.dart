@@ -23,11 +23,6 @@ class PermissionService {
     return 'Need permission\n $permissionMessage';
   }
 
-  Future<bool> hasEnabledPermission () async{
-    final message = await permissionMessage();
-    return message.isEmpty;
-  }
-
   Future<void> openSettings () async {
     await openAppSettings();
   }

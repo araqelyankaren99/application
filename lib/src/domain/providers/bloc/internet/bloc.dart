@@ -1,9 +1,9 @@
 import 'dart:async';
 
+import 'package:application/src/data/data_provider/permission/enabled.dart';
 import 'package:application/src/domain/providers/bloc/internet/event.dart';
 import 'package:application/src/domain/providers/bloc/internet/state.dart';
 import 'package:application/src/domain/services/internet.dart';
-import 'package:application/src/domain/services/permission.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class InternetBloc extends Bloc<InternetEvent, InternetState> {
@@ -15,7 +15,6 @@ class InternetBloc extends Bloc<InternetEvent, InternetState> {
     add(const ListenInternetChangesEvent());
   }
 
-  static const _permissionService = PermissionService();
 
   StreamSubscription<bool>? _internetSubscription;
 
@@ -25,8 +24,8 @@ class InternetBloc extends Bloc<InternetEvent, InternetState> {
     ListenInternetChangesEvent event,
     Emitter<InternetState> emit,
   ) async {
-    final hasEnabledPermission =
-        await _permissionService.hasEnabledPermission();
+    const enabledDataProvider = PermissionEnabledDataProvider();
+    final hasEnabledPermission = enabledDataProvider.hasEnabledPermission;
     if (!hasEnabledPermission) {
       return;
     }

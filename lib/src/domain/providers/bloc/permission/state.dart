@@ -11,6 +11,10 @@ class PermissionInitial extends PermissionState {
   const PermissionInitial();
 }
 
+class PermissionExistingState extends PermissionState {
+  const PermissionExistingState();
+}
+
 class PermissionsNotExistingState extends PermissionState {
   const PermissionsNotExistingState({required this.permissionMessage});
 
