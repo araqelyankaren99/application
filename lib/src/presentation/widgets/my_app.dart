@@ -1,6 +1,7 @@
 import 'package:application/src/config/navigation/main_navigation/main_navigation.dart';
 import 'package:application/src/config/navigation/main_navigation/navigation_controller.dart';
 import 'package:application/src/config/navigation/main_navigation/routing_observer.dart';
+import 'package:application/src/config/theme/theme.dart';
 import 'package:flutter/material.dart';
 
 class MyApp extends StatelessWidget {
@@ -23,6 +24,8 @@ class MyApp extends StatelessWidget {
       onGenerateRoute: mainNavigation.onGenerateRoute,
       navigatorKey: navigationController.navigationKey,
       navigatorObservers: [routingObserver],
+      themeMode: ThemeMode.light,
+      theme: AppTheme.light,
     );
   }
 }
