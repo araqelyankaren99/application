@@ -1,5 +1,5 @@
+import 'package:application/src/config/app_config/app_config.dart';
 import 'package:application/src/data/data_provider/app_config.dart';
-import 'package:application/src/domain/entity/local/app_config.dart';
 import 'package:application/src/utils/enum/app_mode.dart';
 import 'package:application/src/utils/extensions/app_mode.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';

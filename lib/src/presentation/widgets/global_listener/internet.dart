@@ -1,4 +1,4 @@
-import 'package:application/src/config/navigation/navigation_controller.dart';
+import 'package:application/src/config/navigation/main_navigation/navigation_controller.dart';
 import 'package:application/src/domain/providers/bloc/internet/bloc.dart';
 import 'package:application/src/domain/providers/bloc/internet/state.dart';
 import 'package:application/src/utils/dialogs/internet.dart';

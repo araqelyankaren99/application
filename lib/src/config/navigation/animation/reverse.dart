@@ -5,7 +5,7 @@ class ReverseAnimationMaterialPageRoute<T> extends MaterialPageRoute<T> {
     required WidgetBuilder builder,
     RouteSettings? settings,
     bool maintainState = true,
-    bool fullscreenDialog = false,
+    bool fullscreenDialog = true,
   }) : super(
     builder: builder,
     maintainState: maintainState,
@@ -14,7 +14,7 @@ class ReverseAnimationMaterialPageRoute<T> extends MaterialPageRoute<T> {
 
   @override
   Widget buildTransitions(BuildContext context, Animation<double> animation,Animation<double> secondaryAnimation, Widget child) {
-    const begin = Offset(1.0, 0.0);
+    const begin = Offset(-1.0, 0.0);
     const end = Offset.zero;
     const curve = Curves.ease;
 

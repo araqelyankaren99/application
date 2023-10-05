@@ -8,10 +8,10 @@ class HttpInternetCheckerService {
   const HttpInternetCheckerService();
 
   static final _internetBloc = GetIt.I<InternetBloc>();
-  static final _internetService = InternetService();
 
   Future<void> checkInternet() async{
-    final hasInternet = await _internetService.hasInternet;
+    final internetService = InternetService();
+    final hasInternet = await internetService.hasInternet;
     if(!hasInternet){
       _internetBloc.add(const LoseInternetEvent());
       throw const NetworkException();

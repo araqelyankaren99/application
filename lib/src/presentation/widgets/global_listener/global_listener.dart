@@ -1,5 +1,6 @@
 import 'package:application/src/presentation/widgets/global_listener/internet.dart';
 import 'package:application/src/presentation/widgets/global_listener/permission.dart';
+import 'package:application/src/presentation/widgets/global_listener/routing.dart';
 import 'package:application/src/presentation/widgets/global_listener/socket.dart';
 import 'package:flutter/cupertino.dart';
 
@@ -13,7 +14,9 @@ class GlobalListenerWidget extends StatelessWidget {
     return PermissionListenerWidget(
       child: SocketListenerWidget(
         child: InternetListenerWidget(
-          child: child,
+          child: RouterListenerWidget(
+            child: child,
+          ),
         ),
       ),
     );

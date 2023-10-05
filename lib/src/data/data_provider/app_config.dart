@@ -1,4 +1,4 @@
-import 'package:application/src/domain/entity/local/app_config.dart';
+import 'package:application/src/config/app_config/app_config.dart';
 
 AppConfig _appConfig = const AppConfig(host: '', socketHost: '', headersType: '');
 

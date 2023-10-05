@@ -1,0 +1,4 @@
+enum WelcomeType {
+  fromLogin,
+  home,
+}

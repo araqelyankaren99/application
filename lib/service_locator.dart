@@ -1,10 +1,11 @@
-import 'package:application/src/config/navigation/main_navigation.dart';
-import 'package:application/src/config/navigation/page_notifier.dart';
-import 'package:application/src/config/navigation/route_names.dart';
-import 'package:application/src/config/navigation/routing_observer.dart';
+import 'package:application/src/config/navigation/main_navigation/main_navigation.dart';
+import 'package:application/src/config/navigation/main_navigation/navigation_controller.dart';
+import 'package:application/src/config/navigation/main_navigation/route_names.dart';
+import 'package:application/src/config/navigation/main_navigation/routing_observer.dart';
 import 'package:application/src/data/data_provider/permission/enabled.dart';
 import 'package:application/src/data/data_provider/permission/message.dart';
 import 'package:application/src/domain/providers/bloc/internet/bloc.dart';
+import 'package:application/src/domain/providers/bloc/routing/bloc.dart';
 import 'package:application/src/domain/screen_factory/factory.dart';
 import 'package:application/src/domain/services/app_config.dart';
 import 'package:application/src/domain/services/permission.dart';
@@ -28,7 +29,6 @@ Future<void> _registerPermission() async{
   final permissionMessage = await permissionService.permissionMessage();
   messageDataProvider.permissionMessage = permissionMessage;
   enabledDataProvider.hasEnabledPermission = permissionMessage.isEmpty;
-
 }
 
 void _registerInternetBloc() {
@@ -40,8 +40,9 @@ void _registerInternetBloc() {
 void _registerNavigation() {
   _registerScreenFactory();
   _registerNavigationService();
-  _registerPageNotifier();
+  _registerRoutingBloc();
   _registerRoutingObserver();
+  _registerNavigationController();
 }
 
 Future<void> _registerAppConfig() async {
@@ -49,20 +50,26 @@ Future<void> _registerAppConfig() async {
 }
 
 
-void _registerPageNotifier() {
-  final pageNotifier = PageNotifier();
+void _registerRoutingBloc() {
+  final routingBloc = RoutingBloc();
 
-  _serviceLocator.registerLazySingleton<PageNotifier>(() => pageNotifier);
+  _serviceLocator.registerLazySingleton<RoutingBloc>(() => routingBloc);
 }
 
 void _registerRoutingObserver() {
-  final pageNotifier = GetIt.I<PageNotifier>();
+  final routingBloc = GetIt.I<RoutingBloc>();
 
   final routingObserver = RoutingObserver(
-    pageNotifier: pageNotifier,
+    routingBloc: routingBloc,
   );
 
   _serviceLocator.registerLazySingleton<RoutingObserver>(() => routingObserver);
+}
+
+void _registerNavigationController() {
+  final navigationController = NavigationController();
+  _serviceLocator.registerLazySingleton<NavigationController>(() => navigationController);
+
 }
 
 void _registerScreenFactory() {

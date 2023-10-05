@@ -1,5 +1,15 @@
+import 'package:application/src/config/navigation/main_navigation/main_navigation.dart';
+import 'package:application/src/config/navigation/main_navigation/navigation_controller.dart';
+import 'package:application/src/config/navigation/main_navigation/routing_observer.dart';
+import 'package:application/src/data/data_provider/permission/message.dart';
 import 'package:application/src/domain/entity/network/athena_service.dart';
 import 'package:application/src/domain/entity/network/qr_upload_model.dart';
+import 'package:application/src/domain/providers/bloc/battery/bloc.dart';
+import 'package:application/src/domain/providers/bloc/internet/bloc.dart';
+import 'package:application/src/domain/providers/bloc/permission/bloc.dart';
+import 'package:application/src/domain/providers/bloc/permission/event.dart';
+import 'package:application/src/domain/providers/bloc/routing/bloc.dart';
+import 'package:application/src/domain/providers/bloc/socket/bloc.dart';
 import 'package:application/src/presentation/screens/book_appointment/screen.dart';
 import 'package:application/src/presentation/screens/book_return_visit/bloc/bloc.dart';
 import 'package:application/src/presentation/screens/book_return_visit/screen.dart';
@@ -27,16 +37,52 @@ import 'package:application/src/presentation/screens/upload_insurance/screen.dar
 import 'package:application/src/presentation/screens/upload_secondary_insurance/bloc/bloc.dart';
 import 'package:application/src/presentation/screens/upload_secondary_insurance/screen.dart';
 import 'package:application/src/presentation/screens/welcome/screen.dart';
+import 'package:application/src/presentation/widgets/global_listener/global_listener.dart';
+import 'package:application/src/presentation/widgets/my_app.dart';
+import 'package:application/src/utils/enum/login_type.dart';
+import 'package:application/src/utils/enum/welcome_type.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:get_it/get_it.dart';
+import 'package:provider/provider.dart';
 
 class ScreenFactory {
   const ScreenFactory();
 
   Widget makeMyApp() {
-    return const MaterialApp(
-      debugShowCheckedModeBanner: false,
-      home: LoginScreen(),
+    final navigationController = GetIt.I<NavigationController>();
+    final mainNavigation = GetIt.I<MainNavigation>();
+    final routingObserver = GetIt.I<RoutingObserver>();
+    final socketBloc = SocketBloc();
+    final batteryBloc = BatteryBloc();
+    const messageDataProvider = PermissionMessageDataProvider();
+    final permissionBloc = PermissionBloc();
+    final internetBloc = GetIt.I<InternetBloc>();
+    final routingBloc = GetIt.I<RoutingBloc>();
+
+    return MultiProvider(
+      providers: [
+        Provider<NavigationController>(create: (_) => navigationController),
+        BlocProvider<PermissionBloc>(
+          create: (_) => permissionBloc
+            ..add(
+              CheckPermissionEvent(
+                permissionMessage: messageDataProvider.permissionMessage,
+              ),
+            ),
+        ),
+        BlocProvider<SocketBloc>(create: (_) => socketBloc),
+        BlocProvider<BatteryBloc>(create: (_) => batteryBloc),
+        BlocProvider<InternetBloc>(create: (_) => internetBloc),
+        BlocProvider<RoutingBloc>(create: (_) => routingBloc),
+      ],
+      child: GlobalListenerWidget(
+        child: MyApp(
+          mainNavigation: mainNavigation,
+          navigationController: navigationController,
+          routingObserver: routingObserver,
+        ),
+      ),
     );
   }
 
@@ -48,15 +94,15 @@ class ScreenFactory {
     );
   }
 
-  Widget makeLoginScreen() {
+  Widget makeLoginScreen(LoginType loginType) {
     final loginBloc = LoginBloc();
     return BlocProvider<LoginBloc>(
       create: (_) => loginBloc,
-      child: const LoginScreen(),
+      child: LoginScreen(loginType: loginType),
     );
   }
 
-  Widget makeWelcomeScreen() {
+  Widget makeWelcomeScreen(WelcomeType welcomeType) {
     return const WelcomeScreen();
   }
 

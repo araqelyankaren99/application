@@ -1,10 +1,11 @@
-import 'package:application/src/config/navigation/page_notifier.dart';
+import 'package:application/src/domain/providers/bloc/routing/bloc.dart';
+import 'package:application/src/domain/providers/bloc/routing/event.dart';
 import 'package:flutter/material.dart';
 
 class RoutingObserver extends NavigatorObserver {
-  RoutingObserver({required this.pageNotifier});
+  RoutingObserver({required this.routingBloc});
 
-  final PageNotifier pageNotifier;
+  final RoutingBloc routingBloc;
 
   @override
   void didPush(Route<dynamic> route, Route<dynamic>? previousRoute) {
@@ -26,7 +27,7 @@ class RoutingObserver extends NavigatorObserver {
 
   void _updatePage(String? pageName){
     if(pageName!=null){
-      pageNotifier.pageName = pageName;
+      routingBloc.add(ChangeRouteEvent(routeName: pageName));
     }
   }
 }

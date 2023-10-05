@@ -1,4 +1,4 @@
-import 'package:application/src/config/navigation/navigation_controller.dart';
+import 'package:application/src/config/navigation/main_navigation/navigation_controller.dart';
 import 'package:application/src/domain/providers/bloc/permission/bloc.dart';
 import 'package:application/src/domain/providers/bloc/permission/state.dart';
 import 'package:application/src/utils/dialogs/permission.dart';
