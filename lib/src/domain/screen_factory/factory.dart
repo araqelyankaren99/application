@@ -39,6 +39,8 @@ import 'package:application/src/presentation/screens/upload_secondary_insurance/
 import 'package:application/src/presentation/screens/welcome/screen.dart';
 import 'package:application/src/presentation/widgets/global_listener/global_listener.dart';
 import 'package:application/src/presentation/widgets/my_app.dart';
+import 'package:application/src/utils/activation/widgets/check_activation.dart';
+import 'package:application/src/utils/constants/constants.dart' as constants;
 import 'package:application/src/utils/enum/login_type.dart';
 import 'package:application/src/utils/enum/welcome_type.dart';
 import 'package:flutter/material.dart';
@@ -76,13 +78,18 @@ class ScreenFactory {
         BlocProvider<InternetBloc>(create: (_) => internetBloc),
         BlocProvider<RoutingBloc>(create: (_) => routingBloc),
       ],
-      child: GlobalListenerWidget(
-        child: MyApp(
-          mainNavigation: mainNavigation,
-          navigationController: navigationController,
-          routingObserver: routingObserver,
+      child: CheckActivationWidget(
+          activationIntervalDuration: constants.activationIntervalDuration,
+          showTimerDuration: constants.showTimerDuration,
+          child: GlobalListenerWidget(
+            child: MyApp(
+              mainNavigation: mainNavigation,
+              navigationController: navigationController,
+              routingObserver: routingObserver,
+            ),
+          ),
         ),
-      ),
+
     );
   }
 

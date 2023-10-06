@@ -41,7 +41,6 @@ class CustomInputWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    print('call build text field');
     return TextField(
       autofocus: autofocus,
       inputFormatters: inputFormatters,
@@ -59,6 +58,7 @@ class CustomInputWidget extends StatelessWidget {
         isCollapsed: true,
         suffixIcon: suffixIcon,
         hintText: hintText,
+        hintStyle: const TextStyle(fontSize: 20),
         errorText: errorText,
         contentPadding: EdgeInsets.symmetric(
           horizontal: 22,
